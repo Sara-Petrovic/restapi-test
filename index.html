@@ -74,7 +74,7 @@
         <!-- Div sekcija za PUT formu za kategorije -->
 
         <div id="kategorije_put">
-            <input type="text" name="id_kategorije" id="id_kategorije">
+            <input type="text" name="id_kategorije" id="id_kategorije" placeholder="Unesite id kategorije koju menjate">
 
             <input type="text" name="kategorija_naziv_put" id="kategorija_naziv_put" placeholder="Unesite novi naziv kategorije">
         </div>
@@ -82,7 +82,7 @@
         <!-- Div sekcija za PUT formu za novosti -->
 
         <div id="novosti_put">
-            <input type="text" name="id_novosti" id="id_novosti">
+            <input type="text" name="id_novosti" id="id_novosti" placeholder="Unesite id novosti koju menjate">
             <input type="text" name="naslov_novosti_put" placeholder="Unesite novi naslov novosti">
             <br>
             <textarea name="tekst_novosti_put" id="tekst_novosti_put" cols="30" rows="10" placeholder="Unesite novi tekst novosti"></textarea>
@@ -288,9 +288,92 @@
                     break;
                 case "put":
                     //kod za bonus poene
+                    if(tabela=="radio_novosti"){
+                //prikupljamo podatke kojima menjamo novost
+                        var values1 = {
+                            "naslov": $("input[name=naslov_novosti_put]").val(),
+                            "tekst":$("#tekst_novosti_put").val(),
+                            "kategorija_id": parseInt($("#kategorija_odabir_put").val())
+                        };
+                        //takodje uzimamo id novosti koju zelimo da promenimo
+                        var id= $("input[name=id_novosti]").val();
+                        var url1="http://localhost:8080/rest/rest/novosti/"+id;
+                        console.log(values1);
+                        console.log(id);
+                        console.log(url1);
+                        $.ajax({
+                            type:"PUT",
+                            url:url1,
+                            contentType: 'application/json',
+                            data: JSON.stringify(values1),
+                            success: function (data, textStatus, xhr) {  
+                              console.log(data);  
+                             },  
+                             error: function (xhr, textStatus, errorThrown) {  
+                             console.log('Error in Operation');  
+                            }  
+                        });
+                        
+                    }else{
+                        var values2 ={
+                            "kategorija": $("input[name=kategorija_naziv_put]").val(),
+                        }
+                        var id= $("input[name=id_kategorije]").val();
+                        var url1="http://localhost:8080/rest/rest/kategorije/"+id;
+                        console.log(values2);
+                        console.log(id);
+                        console.log(url1);
+                        $.ajax({
+                            type:"PUT",
+                            url:url1,
+                            contentType: 'application/json',
+                            data: JSON.stringify(values2),
+                            success: function (data, textStatus, xhr) {  
+                              console.log(data);  
+                             },  
+                             error: function (xhr, textStatus, errorThrown) {  
+                             console.log('Error in Operation');  
+                            }  
+                        });
+                        
+                    }
                     break;
                 case "delete":
                     //kod za bonus poene
+                    if(tabela=="radio_novosti"){
+                        //uzimam id za brisanje
+                        var id= $("input[name=brisanje]").val();
+                        var url2="http://localhost:8080/rest/rest/novosti/"+id;
+                        console.log(id);
+                        console.log(url2);
+                        $.ajax({
+                            type:"DELETE",
+                            url:url2,
+                            success: function (data, textStatus, xhr) {  
+                              console.log(data);  
+                             },  
+                             error: function (xhr, textStatus, errorThrown) {  
+                             console.log('Error in Operation');  
+                            }  
+                        });
+                        
+                    }else{
+                        //uzimam id za brisanje
+                        var id= $("input[name=brisanje]").val();
+                        var url2="http://localhost:8080/rest/rest/kategorije/"+id;
+                        console.log(id);
+                        console.log(url2);
+                        $.ajax({
+                            type:"DELETE",
+                            url:url2,
+                            success: function (data, textStatus, xhr) {  
+                              console.log(data);  
+                             },  
+                             error: function (xhr, textStatus, errorThrown) {  
+                             console.log('Error in Operation');  
+                            }  
+                        });
+                    }
                     break;
                 default:
                     console.log("default");
